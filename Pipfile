@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+pandas = "*"
+numpy = "*"
+prefect = "*"
+sklearn = "*"
+mlflow = "*"
+hyperopt = "*"
+hydra-core = "*"
+boto3 = "*"
+
+[dev-packages]
+matplotlib = "*"
+jupyterlab = "*"
+seaborn = "*"
+
+[requires]
+python_version = "*"
