@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 import pandas as pd
 
 def convert_month_name_to_num(mname: str):
@@ -17,6 +18,7 @@ def process_occupation(df: pd.DataFrame, top_N_num: int):
 
     1. Create the dictionary based on top N distinct values of Occupation column
     2. Map the dictionary key into the column, occupation
+    3. Save the dictionary to data path
     '''
     
     top_N_num_occupation_list = []
@@ -36,6 +38,10 @@ def process_occupation(df: pd.DataFrame, top_N_num: int):
     top_N_num_occupation_dict["Others"] = 0
     df['Occupation'] = df['Occupation'].map(top_N_num_occupation_dict)
     df['Occupation'] = df['Occupation'].fillna(0)
+
+    with open(f"data/dictionary/occupation_dict.json", 'w') as f:
+        json.dump(top_N_num_occupation_dict, f)
+
     return df
 
 def ordinal_columns_encoding_dict(df: pd.DataFrame, feature: str):
@@ -56,13 +62,16 @@ def ordinal_columns_encoding_dict(df: pd.DataFrame, feature: str):
 
 
 def ordinal_columns_encoding(df: pd.DataFrame, column_list: list):
-    '''This is the function perform the ordinal encoding on the list of columns'''
+    '''1. This is the function perform the ordinal encoding on the list of columns
+       2. Save the dictionary to data path
+    '''
     #Credit_Mix Payment_of_Min_Amount Payment_Behaviour Credit_Score
-
 
     for feature in column_list:
         feature_value_dict = ordinal_columns_encoding_dict(df, feature)
         df[feature] = df[feature].map(feature_value_dict)
+        with open(f"data/dictionary/{feature}_dict.json", 'w') as f:
+            json.dump(feature_value_dict, f)
     return df
 
 def FE_categorical_main(df: pd.DataFrame, top_N_num: int, column_list: list):
