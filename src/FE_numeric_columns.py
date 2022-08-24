@@ -58,7 +58,9 @@ def normalization_columns(df: pd.DataFrame, column_list: list):
     std_scaler = StandardScaler()
 
     for feature in column_list:
-        df[feature] = std_scaler.fit_transform(df[[feature]]).flatten() 
+        #df[feature] = std_scaler.fit_transform(df[[feature]]).flatten() 
+        std_scaler.fit(df[[feature]])
+        df[feature] = std_scaler.transform(df[[feature]]).flatten() 
 
     return df, std_scaler
 
