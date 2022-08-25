@@ -1,0 +1,5 @@
+wdir: ../data
+outs:
+- md5: dcd2feba571c78141fbef6382ad9d9f0
+  size: 52635102
+  path: train_processed.csv
