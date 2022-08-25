@@ -2,4 +2,7 @@ data/test.csv
 data/train_clean.csv
 data/train_processed.csv
 data/train.csv
+data/dictionary
+data/input_processed.json
+data/input.json
 notebook/Untitled.ipynb

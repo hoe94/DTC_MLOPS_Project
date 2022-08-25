@@ -13,6 +13,7 @@ mlflow = "*"
 hyperopt = "*"
 hydra-core = "*"
 boto3 = "*"
+dvc = "*"
 
 [dev-packages]
 matplotlib = "*"
