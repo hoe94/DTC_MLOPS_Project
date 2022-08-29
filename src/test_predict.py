@@ -1,6 +1,6 @@
 import requests
 
-ride = {
+test_data = {
         "ID": "0x1602",
         "Customer_ID": "CUS_0xd40",
         "Month": "January",
@@ -33,5 +33,5 @@ ride = {
 
 
 url = 'http://localhost:9696/predict'
-response = requests.post(url, json=ride)
+response = requests.post(url, json = test_data)
 print(response.json())
