@@ -1,4 +1,4 @@
-#1. Create the state bucket 
+#State bucket for Terraform
 terraform {
     required_providers {
         aws = {
