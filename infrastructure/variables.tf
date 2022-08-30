@@ -10,5 +10,5 @@ variable "mlflow_artifact_bucket_name" {
 
 variable "dvc_remote_storage" {
     description = "Enter your MLflow model artifact bucket name in default value"
-    default     = "dvc_remote_storage"
+    default     = "mlops-project-dvc-remote-storage"
 }

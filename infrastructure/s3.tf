@@ -12,6 +12,6 @@ resource "aws_s3_bucket" "dvc_remote_storage" {
     bucket = var.dvc_remote_storage
     acl    = "private"
     tags   = {
-        Name = "dvc_remote_storage"
+        Name = "dvc-remote-storage"
     }
 }
