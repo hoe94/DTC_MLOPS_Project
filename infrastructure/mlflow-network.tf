@@ -31,6 +31,17 @@ resource "aws_subnet" "mlflow_public_subnet" {
   }
 }
 
+# 3.1 Create a Subnet 2
+resource "aws_subnet" "mlflow_public_subnet2" {
+  vpc_id                  = aws_vpc.mlflow_vpc.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "us-east-2a"
+
+  tags = {
+    Name = "mlflow-public-subnet2"
+  }
+}
+
 # 4. Create Custom Route Table
 resource "aws_route_table" "mlflow_route_table" {
   vpc_id = aws_vpc.mlflow_vpc.id
@@ -62,5 +73,32 @@ resource "aws_vpc_endpoint" "mlflow_endpoint" {
 
   tags = {
     Name = "mlflow-endpoint"
+  }
+}
+
+# 7. Create Security Group
+resource "aws_security_group" "mlflow_server_sg" {
+  name        = "mlflow-server-sg"
+  description = "Allow access to mlflow-rds from VPC Connector."
+  vpc_id      = aws_vpc.mlflow_vpc.id
+
+  ingress {
+    description = "Access to mlflow-rds from VPC Connector."
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    self        = true
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "mlflow-server-sg"
   }
 }
