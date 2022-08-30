@@ -17,6 +17,8 @@ p/s. you may responsible to take the cloud service charges if using own AWS Clou
     - *AmazonS3FullAccess*
     - *AmazonEC2FullAccess*
     - *IAMFullAccess*
+    - *AmazonRDSFullAccess*
+    - *AWSAppRunnerFullAccess*
 
 2. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
 `aws s3 mb s3://[bucket_name]`
