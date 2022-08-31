@@ -6,5 +6,6 @@ data/dictionary
 data/input_processed.json
 data/input.json
 notebook/Untitled.ipynb
-secret_key.txt
+aws_secret_key.txt
+prefect_cloud_api_key.txt
 infrastructure/.terraform

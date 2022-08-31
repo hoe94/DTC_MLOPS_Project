@@ -11,14 +11,15 @@ p/s. you may responsible to take the cloud service charges if using own AWS Clou
 
 4. Configure the access key by enter `aws configure` in the local desktop
 
-### Step 2 - Provisioned the Cloud Services by using Terraform
+### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
 
-1. Assign the below permissions to the user created from step 1
+1. Assign the below permissions to the user created from step 1 in AWS IAM
     - *AmazonS3FullAccess*
     - *AmazonEC2FullAccess*
     - *IAMFullAccess*
     - *AmazonRDSFullAccess*
     - *AWSAppRunnerFullAccess*
+    - *SecretsManagerReadWrite*
 
 2. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
 `aws s3 mb s3://[bucket_name]`
@@ -37,3 +38,12 @@ p/s. you may responsible to take the cloud service charges if using own AWS Clou
 5.1 Enter the credentials to login into mlflow-server-url
     - user: mlflow
     - password: asdf1234
+
+### Step 3 - Setup the Prefect Cloud
+1. Sign up an account from Prefect Cloud v2
+    - https://app.prefect.cloud/auth/login
+
+1.1 Generate the API Key after create the workspace. Copy the API key after the creation.
+
+1.2 Login into prefect
+    prefect auth login -k <YOUR-API-KEY>
