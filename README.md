@@ -31,3 +31,9 @@ p/s. you may responsible to take the cloud service charges if using own AWS Clou
     `terraform apply`
 
 4.1. Type "yes" when prompted to continue
+
+5. Copy the mlflow-server-url from the outputs after complete run terraform apply
+
+5.1 Enter the credentials to login into mlflow-server-url
+    - user: mlflow
+    - password: asdf1234
