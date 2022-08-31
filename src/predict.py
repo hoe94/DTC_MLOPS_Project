@@ -1,5 +1,6 @@
 import json
 import mlflow
+import os
 import pickle
 import requests
 import warnings
@@ -14,19 +15,24 @@ warnings.filterwarnings('ignore')
 
 '''1. Load the best model from mlflow based on the accuracy score'''
 #mlflow.set_tracking_uri('http://127.0.0.1:5000')
-#client = MlflowClient()
-#best_performance_model = client.search_runs(
-#    experiment_ids = 1,
-#    filter_string = "metrics.accuracy > 0.70",
-#    order_by = ['metrics.accuracy DESC']
-#)[0]
-#
-#model_artifact_uri = best_performance_model.info.artifact_uri
-#model_uri = f"{model_artifact_uri}/artifact_folder"
-#model = mlflow.pyfunc.load_model(model_uri)
+os.environ['MLFLOW_TRACKING_USERNAME'] = 'mlflow'
+os.environ['MLFLOW_TRACKING_PASSWORD'] = 'asdf1234'
+MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
-with open('model/model.pkl', 'rb')as f:
-    model = pickle.load(f)
+client = MlflowClient()
+best_performance_model = client.search_runs(
+    experiment_ids = 1,
+    filter_string = "metrics.accuracy > 0.70",
+    order_by = ['metrics.accuracy DESC']
+)[0]
+
+model_artifact_uri = best_performance_model.info.artifact_uri
+model_uri = f"{model_artifact_uri}/artifact_folder"
+model = mlflow.pyfunc.load_model(model_uri)
+
+#with open('model/model.pkl', 'rb')as f:
+#    model = pickle.load(f)
     
 '''2. Load the scaler from model path'''
 with open('model/standard_scaler.pkl', 'rb')as f:

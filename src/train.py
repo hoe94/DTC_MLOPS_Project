@@ -19,12 +19,15 @@ from sklearn.metrics import accuracy_score
 
 #MLFLOW_TRACKING_USERNAME = os.getenv('MLFLOW_TRACKING_USERNAME')
 #MLFLOW_TRACKING_PASSWORD = os.getenv('MLFLOW_TRACKING_PASSWORD')
-MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+#MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
+#mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 #mlflow.set_tracking_uri('http://localhost:5000')
 os.environ['MLFLOW_TRACKING_USERNAME'] = 'mlflow'
 os.environ['MLFLOW_TRACKING_PASSWORD'] = 'asdf1234'
+MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
 #mlflow.set_tracking_uri('https://hy3mtpywid.us-east-2.awsapprunner.com')
 mlflow.set_experiment('Random_Forest')
 
