@@ -23,7 +23,7 @@ resource "aws_rds_cluster" "mlflow_backend_store" {
   backup_retention_period   = 5
   preferred_backup_window   = "04:00-06:00"
   final_snapshot_identifier = "mlflow-db-backup"
-  skip_final_snapshot       = false
+  skip_final_snapshot       = true
   deletion_protection       = false
   apply_immediately         = true
 
@@ -33,6 +33,12 @@ resource "aws_rds_cluster" "mlflow_backend_store" {
     auto_pause               = true
     seconds_until_auto_pause = 1800
   }
+  
+  lifecycle {
+    ignore_changes = [
+      final_snapshot_identifier,
+    ]
+}
 
   tags ={
       Name = "mlflow-rds"

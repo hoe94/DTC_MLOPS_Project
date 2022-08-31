@@ -11,7 +11,7 @@ resource "aws_apprunner_service" "mlflow_server" {
       image_configuration {
         port = 5000
         runtime_environment_variables = {
-          "MLFLOW_ARTIFACT_URI" = "s3://${aws_s3_bucket.mlflow_model_artifact.tags.Name}"
+          "MLFLOW_ARTIFACT_URI" = "s3://${var.mlflow_artifact_bucket_name}"
           "MLFLOW_DB_DIALECT" = "postgresql"
           "MLFLOW_DB_USERNAME" = "${aws_rds_cluster.mlflow_backend_store.master_username}"
           "MLFLOW_DB_PASSWORD" = "${aws_rds_cluster.mlflow_backend_store.master_password}"
