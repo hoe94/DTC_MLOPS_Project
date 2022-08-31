@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 import pickle
 import mlflow
 from mlflow.tracking import MlflowClient
@@ -16,8 +17,18 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
-mlflow.set_tracking_uri('http://localhost:5000')
+#MLFLOW_TRACKING_USERNAME = os.getenv('MLFLOW_TRACKING_USERNAME')
+#MLFLOW_TRACKING_PASSWORD = os.getenv('MLFLOW_TRACKING_PASSWORD')
+MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+#mlflow.set_tracking_uri('http://localhost:5000')
+os.environ['MLFLOW_TRACKING_USERNAME'] = 'mlflow'
+os.environ['MLFLOW_TRACKING_PASSWORD'] = 'asdf1234'
+#mlflow.set_tracking_uri('https://hy3mtpywid.us-east-2.awsapprunner.com')
 mlflow.set_experiment('Random_Forest')
+
+
 
 @task(name = 'load_data')
 def load_data():
@@ -47,8 +58,8 @@ def random_forest(run_name, X_train, X_test, y_train, y_test):
 
             loss_score = cross_val_score(rf_model, X_train, y_train, scoring="accuracy").mean()
 
-            with open('./model/rf_model.pkl', 'wb')as file:
-                pickle.dump(rf_model, file)
+            #with open('./model/rf_model.pkl', 'wb')as file:
+            #    pickle.dump(rf_model, file)
 
             mlflow.sklearn.log_model(rf_model, artifact_path="artifact_folder")
 
@@ -67,7 +78,7 @@ def random_forest(run_name, X_train, X_test, y_train, y_test):
         fn = rf_function,
         space = parameters,
         algo = tpe.suggest,
-        max_evals = 5,
+        max_evals = 2,
         trials = Trials(),
         rstate = rstate_
     )
@@ -130,11 +141,11 @@ def main(run_name):
     """This is the flow function contains all the task function"""
     X_train, X_test, y_train, y_test = load_data()
     random_forest(run_name, X_train, X_test, y_train, y_test)
-    register_best_model(1, run_name)
+    register_best_model('1', run_name)
     transition_model_stage()
 
 if __name__ == "__main__":
-    run_name = "08202022_3_Random_Forest"
+    run_name = "08312022_2_Random_Forest"
     main(run_name)
 
     #Deploy the prefect workflow
