@@ -6,6 +6,6 @@ output "mlflow-model-artifact" {
   value = "s3://${var.mlflow_artifact_bucket_name}"
 }
 
-outupt "mlflow-db-backstore" {
+output "mlflow-db-backstore" {
   value = "${aws_rds_cluster.mlflow_backend_store.endpoint}"
 }
