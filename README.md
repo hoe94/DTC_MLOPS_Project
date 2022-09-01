@@ -2,10 +2,9 @@
 
 ### Step 1 - AWS Cloud configuration :
 
-1. Create a new AWS Cloud account to entitle the free tier service
-p/s. you may responsible to take the cloud service charges if using own AWS Cloud.
+1. Create a new AWS Cloud account
 
-2. Create the User & access key in IAM
+2. Create the User & Access keys in IAM. Copy the Access Key ID & Secret Access Key.
 
 3. Download & Install the AWS CLI on your local desktop
 
@@ -24,7 +23,7 @@ p/s. you may responsible to take the cloud service charges if using own AWS Clou
 2. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
 `aws s3 mb s3://[bucket_name]`
 
-3. Update these 3 keys (bucket, key, region) for the terraform bracket in main.tf under the path *infrastructure/main.tf*
+3. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*
 -- add the screenshot later
 
 4. Run the below command to provision the cloud services
@@ -47,3 +46,22 @@ p/s. you may responsible to take the cloud service charges if using own AWS Clou
 
 1.2 Login into prefect
     prefect auth login -k <YOUR-API-KEY>
+
+### Step 4 - Execute train.py for model creation
+1. Activate the pipenv
+    `pipenv shell`
+
+2. Set the environment variables for AWS configuration. For windows user please use Git Bash.
+    `$ export AWS_ACCESS_KEY_ID=[AWS_ACCESS_KEY_ID]`
+    `$ export AWS_SECRET_ACCESS_KEY=[AWS_SECRET_ACCESS_KEY]`
+
+3. Set the environment variables for MLFLOW_TRACKING_URI. For windows user please use Git Bash.
+    - linux/mac:
+    `$ export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]`
+
+4. Running the train.py under the path *src/train.py*
+    `python src/train.py`
+
+### Step 5 - Containerize the model into docker image
+   `docker build -t mlops-project-credit-score-prediction:v1 .`
+   `docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" --name mlops-project mlops-project-credit-score-prediction:v1`
