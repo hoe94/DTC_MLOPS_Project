@@ -9,3 +9,7 @@ output "mlflow-model-artifact" {
 output "mlflow-db-backstore" {
   value = "${aws_rds_cluster.mlflow_backend_store.endpoint}"
 }
+
+output "aws-ecr-repository" {
+  value = "${aws_ecr_repository.ecr_repo.repository_url}"
+}
