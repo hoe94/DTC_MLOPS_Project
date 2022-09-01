@@ -19,16 +19,13 @@ from sklearn.metrics import accuracy_score
 
 #MLFLOW_TRACKING_USERNAME = os.getenv('MLFLOW_TRACKING_USERNAME')
 #MLFLOW_TRACKING_PASSWORD = os.getenv('MLFLOW_TRACKING_PASSWORD')
-#MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
-#mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 #mlflow.set_tracking_uri('http://localhost:5000')
 os.environ['MLFLOW_TRACKING_USERNAME'] = 'mlflow'
 os.environ['MLFLOW_TRACKING_PASSWORD'] = 'asdf1234'
-MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-
-#mlflow.set_tracking_uri('https://hy3mtpywid.us-east-2.awsapprunner.com')
+#mlflow.set_tracking_uri('https://zmqztduci9.us-east-2.awsapprunner.com')
 mlflow.set_experiment('Random_Forest')
 
 
@@ -81,7 +78,7 @@ def random_forest(run_name, X_train, X_test, y_train, y_test):
         fn = rf_function,
         space = parameters,
         algo = tpe.suggest,
-        max_evals = 2,
+        max_evals = 5,
         trials = Trials(),
         rstate = rstate_
     )
@@ -148,7 +145,7 @@ def main(run_name):
     transition_model_stage()
 
 if __name__ == "__main__":
-    run_name = "08312022_2_Random_Forest"
+    run_name = "09012022_1_Random_Forest"
     main(run_name)
 
     #Deploy the prefect workflow
