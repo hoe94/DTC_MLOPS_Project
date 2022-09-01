@@ -19,6 +19,7 @@
     - *AmazonRDSFullAccess*
     - *AWSAppRunnerFullAccess*
     - *SecretsManagerReadWrite*
+    - *AmazonEC2ContainerRegistryFullAccess*
 
 2. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
 `aws s3 mb s3://[bucket_name]`
@@ -32,7 +33,7 @@
 
 4.1. Type "yes" when prompted to continue
 
-5. Copy the mlflow-server-url from the outputs after complete run terraform apply
+5. Copy the *mlflow-server-url* & *aws-ecr-repository* from the outputs after complete run terraform apply
 
 5.1 Enter the credentials to login into mlflow-server-url
     - user: mlflow
@@ -63,5 +64,34 @@
     `python src/train.py`
 
 ### Step 5 - Containerize the model into docker image
-   `docker build -t mlops-project-credit-score-prediction:v1 .`
-   `docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" --name mlops-project mlops-project-credit-score-prediction:v1`
+1. Build the docker image
+    `docker build -t mlops-project-credit-score-prediction:v1 .`
+
+2. Run the docker image
+    `docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" --name mlops-project mlops-project-credit-score-prediction:v1`
+
+### Step 6 - Pushing the docker image into AWS Elastic Container Registry (ECR)
+1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
+
+```bash
+aws ecr get-login-password \
+    --region [aws-region] \
+| docker login \
+    --username AWS \
+    --password-stdin [aws-ecr-repository]
+```
+
+2. Set the environment variables for AWS_ECR_REMOTE_URI.
+    `AWS_ECR_REMOTE_URI=[aws-ecr-repository]`
+
+3. Push the docker images into ECR
+```bash
+AWS_ECR_REMOTE_URI="000300172107.dkr.ecr.us-east-2.amazonaws.com/ecr_repo"
+REMOTE_TAG="v1"
+REMOTE_IMAGE=${AWS_ECR_REMOTE_URI}:${REMOTE_TAG}
+
+LOCAL_IMAGE="mlops-project-credit-score-prediction:v1"
+docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
+docker push ${REMOTE_IMAGE}
+    
+```
