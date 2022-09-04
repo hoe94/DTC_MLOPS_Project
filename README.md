@@ -60,15 +60,23 @@
     - linux/mac:
     `$ export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]`
 
-4. Running the train.py under the path *src/train.py*
+4. Run the batch script, init.sh to unzip & preprocess the data
+```bash
+./init.sh
+```
+
+5. Running the train.py under the path *src/train.py*
     `python src/train.py`
 
 ### Step 5 - Containerize the model into docker image
 1. Build the docker image
-    `docker build -t mlops-project-credit-score-prediction:v1 .`
+```bash
+docker build -t mlops-project-credit-score-prediction:v1 .
+```
 
 2. Run the docker image
-    `docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" --name mlops-project mlops-project-credit-score-prediction:v1`
+```bash docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" --name mlops-project mlops-project-credit-score-prediction:v1
+```
 
 ### Step 6 - Pushing the docker image into AWS Elastic Container Registry (ECR)
 1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
@@ -82,7 +90,9 @@ aws ecr get-login-password \
 ```
 
 2. Set the environment variables for AWS_ECR_REMOTE_URI.
-    `AWS_ECR_REMOTE_URI=[aws-ecr-repository]`
+```bash 
+AWS_ECR_REMOTE_URI=[aws-ecr-repository]
+```
 
 3. Push the docker images into ECR
 ```bash
@@ -94,4 +104,17 @@ LOCAL_IMAGE="mlops-project-credit-score-prediction:v1"
 docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
 docker push ${REMOTE_IMAGE}
     
+```
+
+### Step 7 - Integration Test
+1. Configure the AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY
+
+2. Configure the MLFLOW_TRACKING_URI inside dockerfile under base path.
+```bash
+ENV MLFLOW_TRACKING_URI [MLFLOW_TRACKING_URI]
+```
+
+3. Run the run.sh batch script for the integration test
+```bash
+./run.sh
 ```

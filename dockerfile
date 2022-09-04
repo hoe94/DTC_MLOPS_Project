@@ -3,7 +3,7 @@ FROM python:3.9.7-slim
 RUN pip install -U pip
 RUN pip install pipenv
 
-ENV MLFLOW_TRACKING_URI https://zmqztduci9.us-east-2.awsapprunner.com
+ENV MLFLOW_TRACKING_URI https://hdevkuvft5.us-east-2.awsapprunner.com
 
 WORKDIR /app
 COPY ["Pipfile", "Pipfile.lock", "./"]
