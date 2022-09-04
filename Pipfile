@@ -20,6 +20,8 @@ gunicorn = "*"
 matplotlib = "*"
 jupyterlab = "*"
 seaborn = "*"
+pytest = "*"
+deepdiff = "*"
 
 [requires]
 python_version = "*"
