@@ -1,13 +1,18 @@
-repos:
--   repo: https://github.com/psf/black
-    rev: 22.6.0
-    hooks:
-    - id: black
-     
--   repo: https://github.com/pycqa/isort
-    rev: 5.10.1
-    hooks:
-    - id: isort
+#repos:
+#-   repo: https://github.com/psf/black
+#    rev: 22.6.0
+#    hooks:
+#    - id: black
+#     
+#-   repo: https://github.com/pycqa/isort
+#    rev: 5.10.1
+#    hooks:
+#    - id: isort
+
+#-   repo: https://github.com/econchick/interrogate
+#    rev: 1.4.0
+#    hooks:
+#    - id: interrogate
 
 -   repo: local
     hooks:
@@ -20,9 +25,4 @@ repos:
       args: [
         "unit_testing/"
       ]
-#    
-#-   repo: https://github.com/econchick/interrogate
-#    rev: 1.4.0
-#    hooks:
-#    - id: interrogate
-#      args: [--vv, -i, --fail-under=50]
+   

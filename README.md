@@ -118,8 +118,19 @@ ENV MLFLOW_TRACKING_URI [MLFLOW_TRACKING_URI]
 ```bash
 ./run.sh
 ```
-### Step 8 - Pre Commit Configuration
+### Othters Step
 1. added pre-commit into git hooks
 ```bash
 pre-commit install
 ```
+
+2. Setup the Makefile in Windows OS
+- install chocolatey package manager, using power shell (admin mode)
+    * tutorial 1: https://stackoverflow.com/questions/2532234/how-to-run-a-makefile-in-windows
+    * tutorial 2: https://chocolatey.org/install
+    * video tutorial: https://www.youtube.com/watch?v=-5WLKu_J_AE
+
+- install makefile by using choco
+    '''bash 
+    choco install make
+    '''

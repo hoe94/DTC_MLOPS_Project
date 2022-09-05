@@ -25,6 +25,7 @@ deepdiff = "*"
 pre-commit = "*"
 black = "*"
 isort = "*"
+interrogate = "*"
 
 [requires]
 python_version = "*"
