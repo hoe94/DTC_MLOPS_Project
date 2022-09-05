@@ -118,3 +118,8 @@ ENV MLFLOW_TRACKING_URI [MLFLOW_TRACKING_URI]
 ```bash
 ./run.sh
 ```
+### Step 8 - Pre Commit Configuration
+1. added pre-commit into git hooks
+```bash
+pre-commit install
+```

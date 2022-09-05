@@ -24,6 +24,7 @@ pytest = "*"
 deepdiff = "*"
 pre-commit = "*"
 black = "*"
+isort = "*"
 
 [requires]
 python_version = "*"
