@@ -22,6 +22,8 @@ jupyterlab = "*"
 seaborn = "*"
 pytest = "*"
 deepdiff = "*"
+pre-commit = "*"
+black = "*"
 
 [requires]
 python_version = "*"

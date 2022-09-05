@@ -1,0 +1,24 @@
+[tool.black]
+exclude = '''
+/(
+\ .git
+\ .gitignore
+\ .pre-commit-config.yaml
+\ .dvc
+\ .ipynb_checkpoints
+\ .pytest_cache
+\ .vscode
+\ dvc_files
+\ infrastructure
+\ model
+\ notebook
+\
+
+
+
+
+
+
+
+)
+'''
