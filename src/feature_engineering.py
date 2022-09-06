@@ -49,6 +49,9 @@ if __name__ == "__main__":
     df, std_scaler = FE_numeric_main(df, fe_numerical_columns_list)
     # df = normalization_columns(df, normalization_columns_list)
     df.to_csv("data/train_processed.csv", index=False)
+    df.to_csv(
+        "monitoring_service/evidently_service/datasets/train_processed.csv", index=False
+    )
 
     with open("model/standard_scaler.pkl", "wb") as f:
         pickle.dump(std_scaler, f)
