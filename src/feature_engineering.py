@@ -10,7 +10,7 @@ from FE_numeric_columns import FE_numeric_main, normalization_columns
 warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
-    df = pd.read_csv("data/train_clean.csv")
+    df = pd.read_csv("data/test_clean.csv")
     fe_categorical_columns_list = [
         "Credit_Mix",
         "Payment_of_Min_Amount",
@@ -49,9 +49,9 @@ if __name__ == "__main__":
     df, std_scaler = FE_numeric_main(df, fe_numerical_columns_list)
     # df = normalization_columns(df, normalization_columns_list)
     df.to_csv("data/train_processed.csv", index=False)
-    df.to_csv(
-        "monitoring_service/evidently_service/datasets/train_processed.csv", index=False
-    )
+    # df.head(1000).to_csv(
+    #    "monitoring_service/evidently_service/datasets/test_processed.csv", index=False
+    # )
 
     with open("model/standard_scaler.pkl", "wb") as f:
         pickle.dump(std_scaler, f)

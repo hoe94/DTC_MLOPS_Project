@@ -3,7 +3,7 @@ code_checks:
 	isort .
 
 unit_test:
-	pytest unit_test/
+	pytest unit_testing/
 
 docker_image_build: code_checks unit_test
 	docker build -t mlops-project-credit-score-prediction:v1 .
