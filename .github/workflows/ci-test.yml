@@ -2,7 +2,7 @@ name: CI-test
 on:
   pull_request:
     branches:
-      - 'dev'
+      - 'main'
     paths:
       - 'unit_testing/**'
 
