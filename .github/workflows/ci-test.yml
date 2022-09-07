@@ -2,7 +2,7 @@ name: CI-test
 on:
   push:
     branches:
-      - 'dev'
+      - 'main'
     paths:
       - 'unit_testing/**'
 
