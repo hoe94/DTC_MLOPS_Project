@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - 'main'
-    paths:
-      - 'unit_testing/**'
 
 jobs:
   testing:
