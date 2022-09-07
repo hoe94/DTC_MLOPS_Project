@@ -20,5 +20,5 @@ jobs:
 
       - name: Execute Unit Testing
         working-directory: 'unit_testing/'
-        run: pipenv run pytest unit_testing/
+        run: pipenv run pytest unit_test.py
 
