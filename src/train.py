@@ -175,7 +175,7 @@ def main(run_name):
 
 
 if __name__ == "__main__":
-    run_name = "09012022_1_Random_Forest"
+    run_name = "09082022_1_Random_Forest"
     main(run_name)
 
     # Deploy the prefect workflow
