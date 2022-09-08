@@ -37,6 +37,5 @@ jobs:
       - name: Execute Integration Testing
         working-directory: 'integration_testing/'
         run: |
-          pwd
           chmod u+x run.sh
 
