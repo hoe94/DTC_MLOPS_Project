@@ -35,7 +35,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Execute Integration Testing
-        working-directory: '/home/runner/work/DTC_MLOPS_Project/DTC_MLOPS_Project/integration_testing/'
+        working-directory: 'integration_testing/'
         run: |
           ./run.sh
 
