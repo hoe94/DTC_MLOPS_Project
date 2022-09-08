@@ -6,8 +6,9 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: 'us-east-2'
   MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
-
+  
 jobs:
   testing:
     runs-on: ubuntu-latest
@@ -31,6 +32,7 @@ jobs:
         with:
           aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Integration Test
         working-directory: 'integration_testing/'
