@@ -37,5 +37,6 @@ jobs:
       - name: Execute Integration Testing
         working-directory: 'integration_testing/'
         run: |
+          pwd
           ./run.sh
 
