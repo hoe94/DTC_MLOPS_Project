@@ -34,8 +34,8 @@ jobs:
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Integration Test
-        working-directory: 'integration_testing/'
+      - name: Execute Integration Testing
+        #working-directory: 'integration_testing/'
         run: |
-          . run.sh
+          cd .. && cd integration_testing && ./run.sh
 
