@@ -26,3 +26,14 @@ jobs:
         working-directory: 'unit_testing/'
         run: pipenv run pytest unit_test.py
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Integration Test
+        working-directory: 'integration_testing/'
+        run: |
+          . run.sh
+
