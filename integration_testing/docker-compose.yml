@@ -1,6 +1,8 @@
 services:
   backend:
-    image: mlops-project-credit-score-prediction:v1
+    #image: mlops-project-credit-score-prediction:v1
+    build:
+      dockerfile: ./dockerfile
     container_name: mlops-project
     ports:
       - 9696:9696
