@@ -10,7 +10,7 @@ RUN pipenv install --system --deploy
 COPY ["/integration_files/FE_categorical_columns.py", "/integration_files/ordinal_columns_encoding.py", "/integration_files/predict.py", "./"]
 
 RUN mkdir model
-COPY ["/integration_files/standard_scaler.pkl", "./model/"]
+COPY ["/integration_files/model.pkl", "/integration_files/standard_scaler.pkl", "./model/"]
 
 EXPOSE 9696
 CMD ["gunicorn", "--timeout", "1000"] 
