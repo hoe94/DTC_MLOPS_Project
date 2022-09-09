@@ -35,7 +35,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Execute Integration Testing
-        #working-directory: 'integration_testing/'
+        working-directory: 'integration_testing/'
         run: |
         (cd integration_testing && sh run.sh)
 
