@@ -1,8 +1,8 @@
 services:
-  backend:
-    #image: mlops-project-credit-score-prediction:v1
+  integration-testing:
     build:
-      dockerfile: ./dockerfile
+      context: ./
+      dockerfile: Dockerfile
     container_name: mlops-project
     ports:
       - 9696:9696
