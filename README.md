@@ -1,4 +1,21 @@
 # DTC_MLOPS_Project
+This is the end to end MLOps project I built through participated the MLOps Zoomcamp among 3 months. This course is organized by [DataTalks.Club](https://datatalks.club). Appreciated the instructors put so much effort on this course, so I can learnt MLOps related skillsets (experiment tracking, workflow orchestration, model deployment, Testing framework, IaC, CI/CD) for FOC. You can refer the MLOps Zoomcamp here [link](https://github.com/DataTalksClub/mlops-zoomcamp).
+
+### Tools & Technology
+* Cloud: Amazon Web Service (AWS)
+* Infrastructure as Code (IAC): Terraform
+* Experiment Tracking: MLFlow + DVC
+* Model Registry: MLFlow
+* Workflow Orchestration: Prefect Cloud
+* Model Deployment: containerized the model with Flask framework
+* Containerization tools: Docker, Docker Compose
+* Testing Framework:
+    * unit-testing (pytest)
+    * integration-testing (docker-compose)
+    * pre-commit (black, isort, pytest)
+* CI/CD Pipeline: Github Actions
+* Programming Language: Python
+
 
 ### Step 1 - AWS Cloud configuration :
 
@@ -27,7 +44,8 @@
 ### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
 1. Download & configure the Terraform on your local env. [link](https://www.terraform.io/downloads)
 
-2. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*
+2. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*<br>
+p/s. please dont use my Terraform state bucket
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/terraform_state_bucket_configuration.png">
 
 3. Run the below command to provision the cloud services
@@ -63,9 +81,9 @@
 ### Step 4 - Setup the Prefect Cloud
 1. Sign up an account from Prefect Cloud v2 [link](https://app.prefect.cloud/auth/login)
 
-1.1 Generate the API Key after create the workspace. Copy the API key after the creation.
+2. Generate the API Key after create the workspace. Copy the API key after the creation.
 
-1.2 Login into prefect on your terminals
+3. Login into prefect on your terminals
     ```bash
     prefect auth login -k <YOUR-API-KEY>
     ```
