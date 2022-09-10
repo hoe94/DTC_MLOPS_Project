@@ -2,17 +2,11 @@
 
 ### Step 1 - AWS Cloud configuration :
 
-1. Create a new AWS Cloud account
+1. Create a new AWS Cloud account [link](https://portal.aws.amazon.com/billing/signup#/start/email)
 
-2. Create the User & Access keys in IAM. Copy the Access Key ID & Secret Access Key.
+2. Create the User & Access keys in IAM <br> Copy the Access Key ID & Secret Access Key
 
-3. Download & Install the AWS CLI on your local desktop
-
-4. Configure the access key by enter `aws configure` in the local desktop
-
-### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
-
-1. Assign the below permissions to the user created from step 1 in AWS IAM
+3. Assign the below permissions to the user created from step 1 in AWS IAM
     - *AmazonS3FullAccess*
     - *AmazonEC2FullAccess*
     - *IAMFullAccess*
@@ -21,38 +15,36 @@
     - *SecretsManagerReadWrite*
     - *AmazonEC2ContainerRegistryFullAccess*
 
-2. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
+4. Download & Install the AWS CLI on your local desktop [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+5. Configure the access key by enter `aws configure` on your local env.
+
+6. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
     ```bash
     aws s3 mb s3://[bucket_name]
     ```
 
-3. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*
--- add the screenshot later
+### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
+1. Download & configure the Terraform on your local env. [link](https://www.terraform.io/downloads)
 
-4. Run the below command to provision the cloud services
+2. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/terraform_state_bucket_configuration.png">
+
+3. Run the below command to provision the cloud services
     ```bash
     terraform plan
     terraform apply
     ```
 
-5. Type "yes" when prompted to continue
+4. Type "yes" when prompted to continue
 
-6. Copy the *mlflow-server-url* & *aws-ecr-repository* from the outputs after complete run terraform apply
+5. Copy the *mlflow-server-url* & *aws-ecr-repository* from the outputs after complete run terraform apply
 
-7. Enter the credentials to login into mlflow-server-url
+6. Enter the credentials to login into mlflow-server-url
     * user: mlflow
     * password: asdf1234
 
-### Step 3 - Setup the Prefect Cloud
-1. Sign up an account from Prefect Cloud v2
-    * https://app.prefect.cloud/auth/login
-
-1.1 Generate the API Key after create the workspace. Copy the API key after the creation.
-
-1.2 Login into prefect
-    * prefect auth login -k <YOUR-API-KEY>
-
-### Step 4 - Execute train.py for model creation
+### Step 3 - Setup the Environment
 1. Activate the pipenv
     ```bash 
     pipenv shell
@@ -68,17 +60,28 @@
     `$ export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]`
     ```
 
-4. Run the batch script, init.sh to unzip & preprocess the data
+### Step 4 - Setup the Prefect Cloud
+1. Sign up an account from Prefect Cloud v2 [link](https://app.prefect.cloud/auth/login)
+
+1.1 Generate the API Key after create the workspace. Copy the API key after the creation.
+
+1.2 Login into prefect on your terminals
+    ```bash
+    prefect auth login -k <YOUR-API-KEY>
+    ```
+
+### Step 5 - Execute train.py for model creation
+1. Run the batch script, init.sh to unzip & preprocess the data
     ```bash
     ./init.sh
     ```
 
-5. Running the train.py under the path *src/train.py*
+2. Running the train.py under the path *src/train.py*
     ```bash
     python src/train.py
     ```
 
-### Step 5 - Containerize the model into docker image
+### Step 6 - Containerize the model into docker image
 1. Build the docker image
 ```bash
 docker build -t mlops-project-credit-score-prediction:v1 .
@@ -89,7 +92,7 @@ docker build -t mlops-project-credit-score-prediction:v1 .
 docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
 ```
 
-### Step 6 - Pushing the docker image into AWS Elastic Container Registry (ECR)
+### Step 7 - Pushing the docker image into AWS Elastic Container Registry (ECR)
 1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
 
 ```bash
@@ -140,4 +143,4 @@ pre-commit install
     '''
 
 ### Step 8 - Configure the environment variable as Secrets in Github
-* add screenshot later
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/github_action_secrets_configuration.png">
