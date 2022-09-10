@@ -52,8 +52,8 @@ The dataset contains the credit-card related information of the customer.
 - [ ] testing framework
     - [x] unit tetsing
     - [x] integration testing
-    - [] localstack
-    - [] pylint
+    - [ ] localstack
+    - [ ] pylint
     - [x] precommit (black, isort, pytest)
     - [x] makefile
 - [x] IaC Tools (Terraform)
