@@ -3,6 +3,8 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
 
 ### Objective
 
+### Project Architecture
+
 
 ### Tools & Technology
 * Cloud: Amazon Web Service (AWS)
@@ -21,17 +23,51 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
 * CI/CD Pipeline: Github Actions
 * Programming Language: Python
 
-### Project Architecture
+### Project Progress
+- [x] download data from kaggle
+- [x] exploratory data analysis
+- [x] feature engineering
+- [x] model training
+- [x] hyperparameter tuning using hyperopts
+- [x] experiment tracking (MLFlow)
+- [x] model registry
+- [x] workflow orchestration (Prefect Cloud)
+- [] model deployment 
+    - [x] Docker
+    - [x] AWS ECR
+    - [] AWS LAMBDA
+- [x] model monitoring (Local only)
+    - [x] Evidently AI
+    - [x] Prometheus
+    - [x] Grafana
+    - [x] Mongodb
+    - [x] Docker Compose
+- [] testing framework
+    - [x] unit tetsing
+    - [x] integration testing
+    - [] localstack
+    - [] pylint
+    - [x] precommit (black, isort, pytest)
+    - [x] makefile
+- [x] infrastructure as code (IaC)
+    - [x] Terraform
+- [x] cloud computing
+    - [x] Amazon Web Service (AWS)
+- [x] CI/CD pipeline
+    - [x] Github Actions
 
 
 ### Steps to reproduce
 #### Step 1 - AWS Cloud configuration :
+1. Clone the Github repository locally:
+    '''bash
+    $ git clone https://github.com/hoe94/DTC_MLOPS_Project.git
+    '''
+2. Create a new AWS Cloud account [link](https://portal.aws.amazon.com/billing/signup#/start/email)
 
-1. Create a new AWS Cloud account [link](https://portal.aws.amazon.com/billing/signup#/start/email)
+3. Create the User & Access keys in IAM <br> Copy the Access Key ID & Secret Access Key
 
-2. Create the User & Access keys in IAM <br> Copy the Access Key ID & Secret Access Key
-
-3. Assign the below permissions to the user created from step 1 in AWS IAM
+4. Assign the below permissions to the user created from step 1 in AWS IAM
     - *AmazonS3FullAccess*
     - *AmazonEC2FullAccess*
     - *IAMFullAccess*
@@ -40,11 +76,11 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
     - *SecretsManagerReadWrite*
     - *AmazonEC2ContainerRegistryFullAccess*
 
-4. Download & Install the AWS CLI on your local desktop [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+5. Download & Install the AWS CLI on your local desktop [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-5. Configure the access key by enter `aws configure` on your local env.
+6. Configure the access key by enter `aws configure` on your local env.
 
-6. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
+7. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
     ```bash
     aws s3 mb s3://[bucket_name]
     ```
