@@ -15,6 +15,7 @@ hydra-core = "*"
 boto3 = "*"
 dvc = "*"
 gunicorn = "*"
+pymongo = "*"
 
 [dev-packages]
 matplotlib = "*"
@@ -26,6 +27,7 @@ pre-commit = "*"
 black = "*"
 isort = "*"
 interrogate = "*"
+pyarrow = "*"
 
 [requires]
 python_version = "*"
