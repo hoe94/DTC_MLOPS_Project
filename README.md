@@ -18,7 +18,8 @@ With the MLOps framework, we can achieved the productivity and reliability model
 * Infrastructure as Code (IAC): Terraform
 * Dependency Management: Pipenv
 * Code Repository: Github
-* Experiment Tracking: MLFlow + DVC
+* Experiment Tracking: MLFlow
+* Data Version Control: DVC
 * Model Registry: MLFlow
 * Workflow Orchestration: Prefect Cloud
 * Model Deployment: containerized the model with Flask framework
@@ -43,7 +44,7 @@ With the MLOps framework, we can achieved the productivity and reliability model
 - [ ] model deployment 
     - [x] Docker
     - [x] AWS ECR
-    - [ ] AWS LAMBDA
+    - [x] AWS Lambda
 - [x] model monitoring (Local only)
     - [x] Evidently AI
     - [x] Prometheus
@@ -65,9 +66,9 @@ With the MLOps framework, we can achieved the productivity and reliability model
 ### Steps to reproduce
 #### Step 1 - AWS Cloud configuration :
 1. Clone the Github repository locally
-    '''bash
+    ```bash
     git clone https://github.com/hoe94/DTC_MLOPS_Project.git
-    '''
+    ```
 
 2. Create a new AWS Cloud account [link](https://portal.aws.amazon.com/billing/signup#/start/email)
 
@@ -255,6 +256,8 @@ pre-commit install
 
 ### Further Improvements
 * Host the monitoring services (evidently AI, Prometheus, Grafana, Mongodb) on AWS Cloud through Terraform
-* Standardize the AWS services creation by using AWS CLI
+* Standardize the AWS services creation by using AWS CLI (Step 1)
+* Push the Docker Image into AWS ECR by using Terraform (Step 7)
+* Create the IAM Role & Deploy the Docker Image on AWS Lambda by using Terraform (Step 8)
 
 
