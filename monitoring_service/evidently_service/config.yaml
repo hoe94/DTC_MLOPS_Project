@@ -1,0 +1,20 @@
+datasets:
+  credit_score:
+    column_mapping:
+      numerical_features:
+        - 'Age'
+        - 'Annual_Income'
+        - 'Monthly_Balance'
+    data_format:
+      header: true
+      separator: ','
+    monitors:
+      - data_drift
+    reference_file: datasets/train_processed.csv
+service:
+  calculation_period_sec: 2
+  min_reference_size: 30
+  moving_reference: false
+  datasets_path: datasets
+  use_reference: true
+  window_size: 5

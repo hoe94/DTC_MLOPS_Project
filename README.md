@@ -1,9 +1,14 @@
 # DTC_MLOPS_Project
 This is the end to end MLOps project I built through participated the MLOps Zoomcamp among 3 months. This course is organized by [DataTalks.Club](https://datatalks.club). Appreciated the instructors put so much effort on this course, so I can learnt MLOps related skillsets (experiment tracking, workflow orchestration, model deployment, Testing framework, IaC, CI/CD) for FOC. You can refer the MLOps Zoomcamp here [link](https://github.com/DataTalksClub/mlops-zoomcamp).
 
+### Objective
+
+
 ### Tools & Technology
 * Cloud: Amazon Web Service (AWS)
 * Infrastructure as Code (IAC): Terraform
+* Dependency Management: Pipenv
+* Code Repository: Github
 * Experiment Tracking: MLFlow + DVC
 * Model Registry: MLFlow
 * Workflow Orchestration: Prefect Cloud
@@ -16,8 +21,11 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
 * CI/CD Pipeline: Github Actions
 * Programming Language: Python
 
+### Project Architecture
 
-### Step 1 - AWS Cloud configuration :
+
+### Steps to reproduce
+#### Step 1 - AWS Cloud configuration :
 
 1. Create a new AWS Cloud account [link](https://portal.aws.amazon.com/billing/signup#/start/email)
 
@@ -41,7 +49,7 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
     aws s3 mb s3://[bucket_name]
     ```
 
-### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
+#### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
 1. Download & configure the Terraform on your local env. [link](https://www.terraform.io/downloads)
 
 2. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*<br>
@@ -62,7 +70,7 @@ p/s. please dont use my Terraform state bucket
     * user: mlflow
     * password: asdf1234
 
-### Step 3 - Setup the Environment
+#### Step 3 - Setup the Environment
 1. Activate the pipenv
     ```bash 
     pipenv shell
@@ -78,7 +86,7 @@ p/s. please dont use my Terraform state bucket
     `$ export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]`
     ```
 
-### Step 4 - Setup the Prefect Cloud
+#### Step 4 - Setup the Prefect Cloud
 1. Sign up an account from Prefect Cloud v2 [link](https://app.prefect.cloud/auth/login)
 
 2. Generate the API Key after create the workspace. Copy the API key after the creation.
@@ -88,7 +96,7 @@ p/s. please dont use my Terraform state bucket
     prefect auth login -k <YOUR-API-KEY>
     ```
 
-### Step 5 - Execute train.py for model creation
+#### Step 5 - Execute train.py for model creation
 1. Run the batch script, init.sh to unzip & preprocess the data
     ```bash
     ./init.sh
@@ -99,7 +107,7 @@ p/s. please dont use my Terraform state bucket
     python src/train.py
     ```
 
-### Step 6 - Containerize the model into docker image
+#### Step 6 - Containerize the model into docker image
 1. Build the docker image
 ```bash
 docker build -t mlops-project-credit-score-prediction:v1 .
@@ -110,7 +118,7 @@ docker build -t mlops-project-credit-score-prediction:v1 .
 docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
 ```
 
-### Step 7 - Pushing the docker image into AWS Elastic Container Registry (ECR)
+#### Step 7 - Pushing the docker image into AWS Elastic Container Registry (ECR)
 1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
 
 ```bash
@@ -137,12 +145,13 @@ docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
 docker push ${REMOTE_IMAGE}
     
 ```
+#### Step 8 - Deploy the docker image into AWS Lambda Function
 
-### Step 7 - Integration Test
-1. Run the run.sh batch script for the integration test
-```bash
-./run.sh
-```
+
+#### Step 9 - Configure the environment variable as Secrets in Github
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/github_action_secrets_configuration.png">
+
+
 ### Othters Step
 1. added pre-commit into git hooks
 ```bash
@@ -160,5 +169,11 @@ pre-commit install
     choco install make
     '''
 
-### Step 8 - Configure the environment variable as Secrets in Github
-<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/github_action_secrets_configuration.png">
+3. Run the run.sh batch script for the integration test
+```bash
+./run.sh
+```
+
+### Further Improvements
+* Host the monitoring services (evidently AI, Prometheus, Grafana, Mongodb) on AWS Cloud through Terraform
+

@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+requests = "*"
+pandas = "*"
+numpy = "*"
+prefect = "*"
+sklearn = "*"
+mlflow = "*"
+hyperopt = "*"
+hydra-core = "*"
+boto3 = "*"
+dvc = "*"
+gunicorn = "*"
+pymongo = "*"
+
+[dev-packages]
+matplotlib = "*"
+jupyterlab = "*"
+seaborn = "*"
+pytest = "*"
+deepdiff = "*"
+pre-commit = "*"
+black = "*"
+isort = "*"
+interrogate = "*"
+
+[requires]
+python_version = "*"

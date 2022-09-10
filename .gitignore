@@ -9,4 +9,3 @@ notebook/Untitled.ipynb
 aws_secret_key.txt
 prefect_cloud_api_key.txt
 infrastructure/.terraform
-monitoring_service/
