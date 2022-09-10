@@ -1,7 +1,13 @@
 # DTC_MLOPS_Project
-This is the end to end MLOps project I built through participated the MLOps Zoomcamp among 3 months. This course is organized by [DataTalks.Club](https://datatalks.club). Appreciated the instructors put so much effort on this course, so I can learnt MLOps related skillsets (experiment tracking, workflow orchestration, model deployment, Testing framework, IaC, CI/CD) for FOC. You can refer the MLOps Zoomcamp here [link](https://github.com/DataTalksClub/mlops-zoomcamp).
+This is the end to end MLOps project I built through participated the MLOps Zoomcamp among 3 months. <br>
+This project more focus on MLOps framework to achieved the productivity and reliability model deployment process.<br>
+This course is organized by [DataTalks.Club](https://datatalks.club). Appreciated the instructors put so much effort on this course, so I can learnt MLOps related skillsets (experiment tracking, workflow orchestration, model deployment, Testing framework, IaC, CI/CD) for FOC. You can refer the MLOps Zoomcamp here [link](https://github.com/DataTalksClub/mlops-zoomcamp).
 
 ### Objective
+The objective of this project is to help the company identify customer’s credibility.<br>
+So that it could help to reduce the manual effort.<br>
+It uses the dataset from [kaggle](https://www.kaggle.com/datasets/parisrohan/credit-score-classification).<br>
+The dataset contains the credit-card related information of the customer.
 
 ### Project Architecture
 
@@ -30,39 +36,38 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
 - [x] model training
 - [x] hyperparameter tuning using hyperopts
 - [x] experiment tracking (MLFlow)
-- [x] model registry
+- [x] data version control (DVC)
+- [x] model registry (MLFlow)
 - [x] workflow orchestration (Prefect Cloud)
-- [] model deployment 
+- [ ] model deployment 
     - [x] Docker
     - [x] AWS ECR
-    - [] AWS LAMBDA
+    - [ ] AWS LAMBDA
 - [x] model monitoring (Local only)
     - [x] Evidently AI
     - [x] Prometheus
     - [x] Grafana
     - [x] Mongodb
     - [x] Docker Compose
-- [] testing framework
+- [ ] testing framework
     - [x] unit tetsing
     - [x] integration testing
     - [] localstack
     - [] pylint
     - [x] precommit (black, isort, pytest)
     - [x] makefile
-- [x] infrastructure as code (IaC)
-    - [x] Terraform
-- [x] cloud computing
-    - [x] Amazon Web Service (AWS)
-- [x] CI/CD pipeline
-    - [x] Github Actions
+- [x] IaC Tools (Terraform)
+- [x] cloud computing (AWS)
+- [x] CI/CD pipeline (Github Actions)
 
 
 ### Steps to reproduce
 #### Step 1 - AWS Cloud configuration :
-1. Clone the Github repository locally:
+1. Clone the Github repository locally
     '''bash
-    $ git clone https://github.com/hoe94/DTC_MLOPS_Project.git
+    git clone https://github.com/hoe94/DTC_MLOPS_Project.git
     '''
+
 2. Create a new AWS Cloud account [link](https://portal.aws.amazon.com/billing/signup#/start/email)
 
 3. Create the User & Access keys in IAM <br> Copy the Access Key ID & Secret Access Key
@@ -75,10 +80,13 @@ This is the end to end MLOps project I built through participated the MLOps Zoom
     - *AWSAppRunnerFullAccess*
     - *SecretsManagerReadWrite*
     - *AmazonEC2ContainerRegistryFullAccess*
+    - *AWSLambda_FullAccess*
+    - *AWSCodeDeployRoleForLambda*
 
 5. Download & Install the AWS CLI on your local desktop [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
 6. Configure the access key by enter `aws configure` on your local env.
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/aws_cli_configure.png">
 
 7. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
     ```bash
@@ -114,12 +122,12 @@ p/s. please dont use my Terraform state bucket
 
 2. Set the environment variables for AWS configuration. For windows user please use Git Bash.
     ```bash
-    $ export AWS_ACCESS_KEY_ID=[AWS_ACCESS_KEY_ID]
-    $ export AWS_SECRET_ACCESS_KEY=[AWS_SECRET_ACCESS_KEY]
+    export AWS_ACCESS_KEY_ID=[AWS_ACCESS_KEY_ID]
+    export AWS_SECRET_ACCESS_KEY=[AWS_SECRET_ACCESS_KEY]
     ```
 3. Set the environment variables for MLFLOW_TRACKING_URI. For windows user please use Git Bash.
     ```bash
-    `$ export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]`
+    export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]
     ```
 
 #### Step 4 - Setup the Prefect Cloud
@@ -145,48 +153,79 @@ p/s. please dont use my Terraform state bucket
 
 #### Step 6 - Containerize the model into docker image
 1. Build the docker image
-```bash
-docker build -t mlops-project-credit-score-prediction:v1 .
-```
+    ```bash
+    docker build -t mlops-project-credit-score-prediction:v1 .
+    ```
 
-2. Run the docker image
-```bash 
-docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
-```
+2. Run the docker image on local env
+    ```bash 
+    docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
+    ```
 
 #### Step 7 - Pushing the docker image into AWS Elastic Container Registry (ECR)
 1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
 
-```bash
-aws ecr get-login-password \
-    --region [aws-region] \
-| docker login \
-    --username AWS \
-    --password-stdin [aws-ecr-repository]
-```
+    ```bash
+    aws ecr get-login-password \
+        --region [aws-region] \
+    | docker login \
+        --username AWS \
+        --password-stdin [aws-ecr-repository]
+    ```
 
 2. Set the environment variables for AWS_ECR_REMOTE_URI.
-```bash 
-AWS_ECR_REMOTE_URI=[aws-ecr-repository]
-```
+    ```bash 
+    AWS_ECR_REMOTE_URI=[aws-ecr-repository]
+    ```
 
 3. Push the docker images into ECR
-```bash
-AWS_ECR_REMOTE_URI="000300172107.dkr.ecr.us-east-2.amazonaws.com/ecr_repo"
-REMOTE_TAG="v1"
-REMOTE_IMAGE=${AWS_ECR_REMOTE_URI}:${REMOTE_TAG}
+    ```bash
+    AWS_ECR_REMOTE_URI="000300172107.dkr.ecr.us-east-2.amazonaws.com/ecr_repo"
+    REMOTE_TAG="v1"
+    REMOTE_IMAGE=${AWS_ECR_REMOTE_URI}:${REMOTE_TAG}
 
-LOCAL_IMAGE="mlops-project-credit-score-prediction:v1"
-docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
-docker push ${REMOTE_IMAGE}
-    
-```
+    LOCAL_IMAGE="mlops-project-credit-score-prediction:v1"
+    docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
+    docker push ${REMOTE_IMAGE}
+
+    ```
 #### Step 8 - Deploy the docker image into AWS Lambda Function
+1. Copy the Docker Image URL from AWS ECR
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/aws_ecr_copy_image_url.png">
 
+2. Create the IAM role & Attach the policy by using AWS CLI for the Lambda Function
+    ```bash
+    aws iam create-role --role-name Lambda-role --assume-role-policy-document file://lambda-role-trust-policy.json
+    aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess --role-name Lambda-role
+    aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess --role-name Lambda-role
+    aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole --role-name Lambda-role
+    ```
+3. Create the Lambda Function by using AWS CLI
+    ```bash
+    aws lambda create-function --region [aws-region] --function-name credit-score-prediction-lambda \
+    --package-type Image  \
+    --code ImageUri=[ECR Image URI]   \
+    --role arn:aws:iam::000300172107:role/Lambda-role
+    ```
 
+Reference Link: [link](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
 #### Step 9 - Configure the environment variable as Secrets in Github
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/github_action_secrets_configuration.png">
 
+
+#### Bonus Step - Execute the model monitoring tools on local env
+1. Go to monitoring_service folder
+    ```bash
+    cd monitoring_service
+    ```
+2. Start the monitoring services (evidently AI, Prometheus, Grafana, Mongodb)
+    ```bash
+    docker compose up
+    ```
+3. Execute the traffic_simulation.py to send the data
+    ```bash
+    python traffic_simulation.py
+    ```
 
 ### Othters Step
 1. added pre-commit into git hooks
@@ -212,4 +251,6 @@ pre-commit install
 
 ### Further Improvements
 * Host the monitoring services (evidently AI, Prometheus, Grafana, Mongodb) on AWS Cloud through Terraform
+* Standardize the AWS services creation by using AWS CLI
+
 

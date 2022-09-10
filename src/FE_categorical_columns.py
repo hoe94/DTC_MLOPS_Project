@@ -83,6 +83,8 @@ def ordinal_columns_encoding(df: pd.DataFrame, column_list: list):
 
 
 def FE_categorical_main(df: pd.DataFrame, top_N_num: int, column_list: list):
+    """Consolidated functions to apply the feature engineering technique into categorical columns"""
+    
     df = process_month(df)
     df = process_occupation(df, top_N_num)
     df = ordinal_columns_encoding(df, column_list)

@@ -80,6 +80,9 @@ def normalization_columns(df: pd.DataFrame, column_list: list):
 
 
 def FE_numeric_main(df: pd.DataFrame, column_list: list):
+    """Consolidated functions to apply the feature engineering technique into numerical columns"""
+
+
     df = process_age_count(df)
     df = process_monthly_inhand_salary(df)
     df = process_num_credit_inquiries(df)
