@@ -3,10 +3,10 @@ import os
 import pickle
 import warnings
 
-import mlflow
+#import mlflow
 import requests
 from flask import Flask, jsonify, request
-from mlflow.tracking import MlflowClient
+#from mlflow.tracking import MlflowClient
 from sklearn.preprocessing import StandardScaler
 
 from FE_categorical_columns import convert_month_name_to_num

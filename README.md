@@ -7,10 +7,11 @@ This course is organized by [DataTalks.Club](https://datatalks.club). Appreciate
 The objective of this project is to help the company identify customer’s credibility.<br>
 So that it could help to reduce the manual effort.<br>
 It uses the dataset from [kaggle](https://www.kaggle.com/datasets/parisrohan/credit-score-classification).<br>
-The dataset contains the credit-card related information of the customer.
+The dataset contains the credit-card related information of the customer.<br>
+With the MLOps framework, we can achieved the productivity and reliability model deployment process.
 
 ### Project Architecture
-
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/project_architecture.png">
 
 ### Tools & Technology
 * Cloud: Amazon Web Service (AWS)
@@ -94,6 +95,9 @@ The dataset contains the credit-card related information of the customer.
     ```
 
 #### Step 2 - Provisioned the Cloud Services by using Terraform (MLFlow Server)
+Thanks for the inspriration from [Nicholas](https://github.com/npogeant) to setup the MLFlow Server on AWS through Terraform. <br>
+He finds the gem on Github [link](https://github.com/DougTrajano/mlflow-server) about setup the MLFlow Server on AWS App Runner.
+
 1. Download & configure the Terraform on your local env. [link](https://www.terraform.io/downloads)
 
 2. Update the bucket under backend s3 for Terraform state bucket in terraform.tf under the path *infrastructure/terraform.tf*<br>
