@@ -12,6 +12,7 @@ With the MLOps framework, we can achieved the productivity and reliability model
 
 ### Project Architecture
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/project_architecture.png">
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/project_architecture-local.png">
 
 ### Tools & Technology
 * Cloud: Amazon Web Service (AWS)
