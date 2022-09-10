@@ -76,8 +76,8 @@ def random_forest(run_name, X_train, X_test, y_train, y_test):
                 rf_model, X_train, y_train, scoring="accuracy"
             ).mean()
 
-            # with open('./model/rf_model.pkl', 'wb')as file:
-            #    pickle.dump(rf_model, file)
+            with open('./model/rf_model.pkl', 'wb')as file:
+                pickle.dump(rf_model, file)
 
             mlflow.sklearn.log_model(rf_model, artifact_path="artifact_folder")
 
