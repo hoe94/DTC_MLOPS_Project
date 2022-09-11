@@ -1,4 +1,2 @@
-[core]
-    remote = storage
-['remote "storage"']
-    url = s3://stg-mlops-project-dvc-bucket
+['remote "myremote"']
+    url = s3://mlops-project-dvc-remote-storage

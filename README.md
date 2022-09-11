@@ -156,9 +156,25 @@ p/s. please dont use my Terraform state bucket
     ```bash
     python src/train.py
     ```
+
 #### Step 6 - Data Version Control
+1. These are the commands to configure the DVC
+    ```bash
+    dvc init
+    mkdir dvc_files
+    cd dvc_files
+    dvc add ../data --file dvc_data.dvc
+    ```
 
+2. Configure the DVC remote storage by add the AWS S3 Bucket, mlops-project-dvc-remote-storage
+    ```bash
+    dvc remote add myremote s3://mlops-project-dvc-remote-storage
+    ```
 
+3. Push the dataset metadata to AWS S3 Bucket
+    ```bash
+    dvc push -r myremote
+    ```
 
 #### Step 7 - Containerize the model into docker image on local env
 1. Build the docker image
@@ -170,6 +186,7 @@ p/s. please dont use my Terraform state bucket
     ```bash 
     docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
     ```
+    
 3. Run the test_predict.py to test the running container
     ```bash
     python src/test_predict.py
@@ -224,7 +241,9 @@ p/s. please dont use my Terraform state bucket
     aws lambda create-function --region [aws-region] --function-name credit-score-prediction-lambda \
     --package-type Image  \
     --code ImageUri=[ECR Image URI]   \
-    --role arn:aws:iam::000300172107:role/Lambda-role
+    --role arn:aws:iam::000300172107:role/Lambda-role  \
+    --timeout 60  \
+    --memory-size 256
     ```
 
 Reference Link: [link](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
@@ -284,6 +303,7 @@ pre-commit install
 * Standardize the AWS services creation by using AWS CLI (Step 1)
 * Push the Docker Image into AWS ECR by using Terraform (Step 7)
 * Create the IAM Role & Deploy the Docker Image on AWS Lambda by using Terraform (Step 8)
-* Delete the items by using Terraform (Last Step)
+* Expose the Lambda function as API by using AWS API Gateway [link](https://www.youtube.com/watch?v=wyZ9aqQOXvs&list=PL3MmuxUbc_hIhxl5Ji8t4O6lPAOpHaCLR&index=98)
+* Delete the items by using Terraform (Last Step no.1)
 
 
