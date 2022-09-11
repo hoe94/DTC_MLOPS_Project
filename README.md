@@ -1,14 +1,15 @@
 # DTC_MLOPS_Project
 This is the end to end MLOps project I built through participated the MLOps Zoomcamp among 3 months. <br>
-This project more focus on MLOps framework to achieved the productivity and reliability model deployment process.<br>
-This course is organized by [DataTalks.Club](https://datatalks.club). Appreciated the instructors put so much effort on this course, so I can learnt MLOps related skillsets (experiment tracking, workflow orchestration, model deployment, Testing framework, IaC, CI/CD) for FOC. You can refer the MLOps Zoomcamp here [link](https://github.com/DataTalksClub/mlops-zoomcamp).
+This project is focus more on MLOps framework to achieved the productivity and reliability model deployment process.<br>
+This course is organized by [DataTalks.Club](https://datatalks.club). Appreciated the instructors put so much effort on this course, so I can learnt MLOps related skillsets for FOC. You can refer the MLOps Zoomcamp here [link](https://github.com/DataTalksClub/mlops-zoomcamp).
 
 ### Objective
-The objective of this project is to help the company identify customer’s credibility.<br>
-So that it could help to reduce the manual effort.<br>
+The objective of this project is to help the company identify customer’s credibility. So that it could help to reduce the manual effort.<br>
 It uses the dataset from [kaggle](https://www.kaggle.com/datasets/parisrohan/credit-score-classification).<br>
-The dataset contains the credit-card related information of the customer.<br>
-With the MLOps framework, we can achieved the productivity and reliability model deployment process.
+The dataset contains the credit-card related information of the customer.<br><br>
+
+In this project, I implemented the MLOps framework to achieved the productivity and reliability model deployment process.<br>
+Such as experiment tracking, model registry, data version control, model deployment, testing framework and CI/CD deployment.
 
 ### Project Architecture
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/project_architecture.png">
@@ -42,7 +43,7 @@ With the MLOps framework, we can achieved the productivity and reliability model
 - [x] data version control (DVC)
 - [x] model registry (MLFlow)
 - [x] workflow orchestration (Prefect Cloud)
-- [ ] model deployment 
+- [x] model deployment 
     - [x] Docker
     - [x] AWS ECR
     - [x] AWS Lambda
@@ -55,6 +56,7 @@ With the MLOps framework, we can achieved the productivity and reliability model
 - [ ] testing framework
     - [x] unit tetsing
     - [x] integration testing
+    - [x] deepcheck
     - [ ] localstack
     - [ ] pylint
     - [x] precommit (black, isort, pytest)
@@ -75,7 +77,7 @@ With the MLOps framework, we can achieved the productivity and reliability model
 
 3. Create the User & Access keys in IAM <br> Copy the Access Key ID & Secret Access Key
 
-4. Assign the below permissions to the user created from step 1 in AWS IAM
+4. Assign the below permissions to the user created from no.3 in AWS IAM
     - *AmazonS3FullAccess*
     - *AmazonEC2FullAccess*
     - *IAMFullAccess*
@@ -115,6 +117,7 @@ p/s. please dont use my Terraform state bucket
 4. Type "yes" when prompted to continue
 
 5. Copy the *mlflow-server-url*, *aws-ecr-repository* & *dvc_remote_storage* from the outputs after complete run terraform apply
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/terraform_done_setup.png">
 
 6. Enter the credentials to login into mlflow-server-url
     * user: mlflow
@@ -204,7 +207,7 @@ p/s. please dont use my Terraform state bucket
     ```bash
     aws ecr get-login-password \
         --region [aws-region] \
-    | docker login \
+        | docker login \
         --username AWS \
         --password-stdin [aws-ecr-repository]
     ```
@@ -216,7 +219,6 @@ p/s. please dont use my Terraform state bucket
 
 3. Push the docker images into ECR
     ```bash
-    AWS_ECR_REMOTE_URI="000300172107.dkr.ecr.us-east-2.amazonaws.com/ecr_repo"
     REMOTE_TAG="v1"
     REMOTE_IMAGE=${AWS_ECR_REMOTE_URI}:${REMOTE_TAG}
 
@@ -290,9 +292,9 @@ pre-commit install
     * video tutorial: https://www.youtube.com/watch?v=-5WLKu_J_AE
 
 - install makefile by using choco
-    '''bash 
+    ```bash 
     choco install make
-    '''
+    ```
 
 3. Select the modules (code checks, unit_testing, integration_testing) from the makefile
     ```bash
