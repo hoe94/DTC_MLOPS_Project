@@ -1,0 +1,61 @@
+name: CD-Deploy
+on:
+  push:
+    branches:
+      - 'main'
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: 'us-east-2'
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform plan
+        id: tf-plan
+        working-directory: 'infrastructure/'
+        run: |
+          terraform init && terraform plan
+
+      - name: Terraform apply
+        id: tf-apply
+        if: ${{ steps.tf-plan.outcome }} == 'success'
+        run: |
+          terraform apply -auto-approve
+          echo "::set-output name=aws-ecr-repository::$(terraform output aws-ecr-repository | xargs)"
+          echo "::set-output name=dvc_remote_storage::$(terraform output dvc_remote_storage | xargs)"
+          echo "::set-output name=mlflow-db-backstore::$(terraform output mlflow-db-backstore | xargs)"
+          echo "::set-output name=mlflow-model-artifact::$(terraform output mlflow-model-artifact | xargs)"
+          echo "::set-output name=mlflow-server-url::$(terraform output mlflow-server-url | xargs)"
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - name: Build Docker image and push to ECR
+        id: build-push
+        env:
+          ECR_REPOSITORY: ${{ steps.tf-apply.outputs.aws-ecr-repository }}
+          LOCAL_IMAGE: 'lambda-function-credit-score-prediction:v1'
+        run: |
+          docker build -t lambda-function-credit-score-prediction:v1 -f lambda_function.dockerfile .
+          docker tag $LOCAL_IMAGE ${{env.ECR_REPOSITORY}}:v1
+          docker push ${{env.ECR_REPOSITORY}}:v1
+
+      - name: Update Lambda Function
+        id: update-lambda
+        run: |
+          aws lambda update-function-configuration --function-name credit-score-prediction-lambda
