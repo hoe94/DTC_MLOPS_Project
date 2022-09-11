@@ -88,7 +88,7 @@ With the MLOps framework, we can achieved the productivity and reliability model
 
 5. Download & Install the AWS CLI on your local desktop [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-6. Configure the access key by enter `aws configure` on your local env.
+6. Configure the access keys by enter `aws configure` on your local env.
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/aws_cli_configure.png">
 
 7. Create the S3 Bucket by using AWS CLI for the Terraform state bucket
@@ -114,7 +114,7 @@ p/s. please dont use my Terraform state bucket
 
 4. Type "yes" when prompted to continue
 
-5. Copy the *mlflow-server-url* & *aws-ecr-repository* from the outputs after complete run terraform apply
+5. Copy the *mlflow-server-url*, *aws-ecr-repository* & *dvc_remote_storage* from the outputs after complete run terraform apply
 
 6. Enter the credentials to login into mlflow-server-url
     * user: mlflow
@@ -131,6 +131,7 @@ p/s. please dont use my Terraform state bucket
     export AWS_ACCESS_KEY_ID=[AWS_ACCESS_KEY_ID]
     export AWS_SECRET_ACCESS_KEY=[AWS_SECRET_ACCESS_KEY]
     ```
+    
 3. Set the environment variables for MLFLOW_TRACKING_URI. For windows user please use Git Bash.
     ```bash
     export MLFLOW_TRACKING_URI=[MLFLOW_TRACKING_URI]
@@ -156,9 +157,25 @@ p/s. please dont use my Terraform state bucket
     ```bash
     python src/train.py
     ```
+
 #### Step 6 - Data Version Control
+1. These are the commands to configure the DVC
+    ```bash
+    dvc init
+    mkdir dvc_files
+    cd dvc_files
+    dvc add ../data --file dvc_data.dvc
+    ```
 
+2. Configure the DVC remote storage by add the AWS S3 Bucket, mlops-project-dvc-remote-storage
+    ```bash
+    dvc remote add myremote s3://mlops-project-dvc-remote-storage
+    ```
 
+3. Push the dataset metadata to AWS S3 Bucket
+    ```bash
+    dvc push -r myremote
+    ```
 
 #### Step 7 - Containerize the model into docker image on local env
 1. Build the docker image
@@ -170,6 +187,7 @@ p/s. please dont use my Terraform state bucket
     ```bash 
     docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
     ```
+
 3. Run the test_predict.py to test the running container
     ```bash
     python src/test_predict.py
@@ -183,7 +201,6 @@ p/s. please dont use my Terraform state bucket
 
 #### Step 8 - Pushing the docker image into AWS Elastic Container Registry (ECR)
 1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
-
     ```bash
     aws ecr get-login-password \
         --region [aws-region] \
@@ -224,10 +241,13 @@ p/s. please dont use my Terraform state bucket
     aws lambda create-function --region [aws-region] --function-name credit-score-prediction-lambda \
     --package-type Image  \
     --code ImageUri=[ECR Image URI]   \
-    --role arn:aws:iam::000300172107:role/Lambda-role
+    --role arn:aws:iam::000300172107:role/Lambda-role  \
+    --timeout 60  \
+    --memory-size 256
     ```
 
-Reference Link: [link](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
+Reference Link: [link](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html) <br>
+Reference Link: [link2](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html)
 
 #### Step 10 - Configure the environment variable as Secrets in Github
 
@@ -274,16 +294,20 @@ pre-commit install
     choco install make
     '''
 
-3. Run the run.sh batch script for the integration test
-```bash
-./run.sh
-```
+3. Select the modules (code checks, unit_testing, integration_testing) from the makefile
+    ```bash
+    make [module]
+    ```
+<img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/makefile-selection.png">
+
+
 
 ### Further Improvements
 * Host the monitoring services (evidently AI, Prometheus, Grafana, Mongodb) on AWS Cloud through Terraform
 * Standardize the AWS services creation by using AWS CLI (Step 1)
 * Push the Docker Image into AWS ECR by using Terraform (Step 7)
 * Create the IAM Role & Deploy the Docker Image on AWS Lambda by using Terraform (Step 8)
-* Delete the items by using Terraform (Last Step)
+* Expose the Lambda function as API by using AWS API Gateway [link](https://www.youtube.com/watch?v=wyZ9aqQOXvs&list=PL3MmuxUbc_hIhxl5Ji8t4O6lPAOpHaCLR&index=98)
+* Delete the items by using Terraform (Last Step no.1)
 
 
