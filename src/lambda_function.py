@@ -1,12 +1,4 @@
-import json
-import os
 import pickle
-import warnings
-
-import mlflow
-import requests
-from flask import Flask, jsonify, request
-from mlflow.tracking import MlflowClient
 from sklearn.preprocessing import StandardScaler
 
 from FE_categorical_columns import convert_month_name_to_num
@@ -15,29 +7,9 @@ from ordinal_columns_encoding import (Credit_Mix_dict_mapping,
                                       Payment_Behaviour_dict_mapping,
                                       Payment_of_Min_Amount_dict_mapping)
 
-warnings.filterwarnings("ignore")
-
-"""1. Load the best model from mlflow based on the accuracy score"""
-# mlflow.set_tracking_uri('http://127.0.0.1:5000')
-os.environ["MLFLOW_TRACKING_USERNAME"] = "mlflow"
-os.environ["MLFLOW_TRACKING_PASSWORD"] = "asdf1234"
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-
-client = MlflowClient()
-best_performance_model = client.search_runs(
-    experiment_ids=1,
-    filter_string="metrics.accuracy > 0.70",
-    order_by=["metrics.accuracy DESC"],
-)[0]
-
-model_artifact_uri = best_performance_model.info.artifact_uri
-model_uri = f"{model_artifact_uri}/artifact_folder"
-model = mlflow.pyfunc.load_model(model_uri)
-
-#with open('model/model.pkl', 'rb')as f:
-#    """1. Load the scaler from model path"""
-#    model = pickle.load(f)
+with open('model/model.pkl', 'rb')as f:
+    """1. Load the scaler from model path"""
+    model = pickle.load(f)
 
 
 with open("model/standard_scaler.pkl", "rb") as f:
@@ -117,12 +89,8 @@ def process_request(data_request):
     return data_processed_request_dict
 
 
-app = Flask("credit_score_classifier")
-
-
-@app.route("/predict", methods=["POST"])
-def main():
-    data_request = request.get_json()
+def predict(event):
+    data_request = event
 
     features = process_request(data_request)
     feature_values = list(features.values())
@@ -131,8 +99,9 @@ def main():
 
     result = {"credit_score": int(preds[0])}
 
-    return jsonify(result)
+    return result
 
 
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=9696)
+def lambda_handler(event, context):
+    result = predict(event)
+    return result
