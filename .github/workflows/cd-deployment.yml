@@ -54,8 +54,9 @@ jobs:
           LOCAL_IMAGE: 'lambda-function-credit-score-prediction:v1'
           IMAGE_TAG: "latest"
         run: |
-          docker build -t $LOCAL_IMAGE -f lambda_function.dockerfile .
-          docker push $LOCAL_IMAGE
+          docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG} . -f lambda_function.dockerfile .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image_uri::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Update Lambda Function
         id: update-lambda
