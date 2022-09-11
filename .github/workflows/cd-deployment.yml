@@ -51,10 +51,11 @@ jobs:
         env:
           ECR_REPOSITORY: ${{ steps.tf-apply.outputs.aws-ecr-repository }}
           LOCAL_IMAGE: 'lambda-function-credit-score-prediction:v1'
+          IMAGE_TAG: "latest"
         run: |
           docker build -t lambda-function-credit-score-prediction:v1 -f lambda_function.dockerfile .
-          docker tag $LOCAL_IMAGE ${{env.ECR_REPOSITORY}}:v1
-          docker push ${{env.ECR_REPOSITORY}}:v1
+          docker tag $LOCAL_IMAGE ${{env.ECR_REPOSITORY}}:$IMAGE_TAG
+          docker push ${{env.ECR_REPOSITORY}}$IMAGE_TAG
 
       - name: Update Lambda Function
         id: update-lambda
