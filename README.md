@@ -156,8 +156,11 @@ p/s. please dont use my Terraform state bucket
     ```bash
     python src/train.py
     ```
+#### Step 6 - Data Version Control
 
-#### Step 6 - Containerize the model into docker image
+
+
+#### Step 7 - Containerize the model into docker image on local env
 1. Build the docker image
     ```bash
     docker build -t mlops-project-credit-score-prediction:v1 .
@@ -167,8 +170,18 @@ p/s. please dont use my Terraform state bucket
     ```bash 
     docker run -it --rm -p 9696:9696 -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI}" --name mlops-project mlops-project-credit-score-prediction:v1
     ```
+3. Run the test_predict.py to test the running container
+    ```bash
+    python src/test_predict.py
+    ```
 
-#### Step 7 - Pushing the docker image into AWS Elastic Container Registry (ECR)
+#### Step 7.1 - Build the docker image for AWS Lambda
+1. Build the docker image
+    ```bash
+    docker build -t lambda-function-credit-score-prediction:v1 -f lambda_function.dockerfile .
+    ```
+
+#### Step 8 - Pushing the docker image into AWS Elastic Container Registry (ECR)
 1. login into AWS ECR. Please fill in the variables, *aws-region* & *aws-ecr-repository*. Please refer back Step 2.5 for *aws-ecr-repository*.
 
     ```bash
@@ -190,12 +203,12 @@ p/s. please dont use my Terraform state bucket
     REMOTE_TAG="v1"
     REMOTE_IMAGE=${AWS_ECR_REMOTE_URI}:${REMOTE_TAG}
 
-    LOCAL_IMAGE="mlops-project-credit-score-prediction:v1"
+    LOCAL_IMAGE="lambda-function-credit-score-prediction:v1"
     docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
     docker push ${REMOTE_IMAGE}
 
     ```
-#### Step 8 - Deploy the docker image into AWS Lambda Function
+#### Step 9 - Deploy the docker image into AWS Lambda Function
 1. Copy the Docker Image URL from AWS ECR
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/aws_ecr_copy_image_url.png">
 
@@ -215,9 +228,20 @@ p/s. please dont use my Terraform state bucket
     ```
 
 Reference Link: [link](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
-#### Step 9 - Configure the environment variable as Secrets in Github
+
+#### Step 10 - Configure the environment variable as Secrets in Github
+
+1. This is the step that when you want execute the CI/CD Pipeline through Github Action by create Pull request
 <img alt = "image" src = "https://github.com/hoe94/DTC_MLOPS_Project/blob/main/images/github_action_secrets_configuration.png">
 
+
+#### Last Step - Shut Down the Project
+1. Delete the AWS Lambda, AWS ECR Docker Image & AWS S3 mlflow-model-artifact through AWS Console
+
+2. Destroy the cloud services through Terraform
+    ```bash
+    terraform destroy --auto-approve
+    ```
 
 #### Bonus Step - Execute the model monitoring tools on local env
 1. Go to monitoring_service folder
@@ -260,5 +284,6 @@ pre-commit install
 * Standardize the AWS services creation by using AWS CLI (Step 1)
 * Push the Docker Image into AWS ECR by using Terraform (Step 7)
 * Create the IAM Role & Deploy the Docker Image on AWS Lambda by using Terraform (Step 8)
+* Delete the items by using Terraform (Last Step)
 
 
