@@ -311,5 +311,6 @@ pre-commit install
 * Create the IAM Role & Deploy the Docker Image on AWS Lambda by using Terraform (Step 8)
 * Expose the Lambda function as API by using AWS API Gateway [link](https://www.youtube.com/watch?v=wyZ9aqQOXvs&list=PL3MmuxUbc_hIhxl5Ji8t4O6lPAOpHaCLR&index=98)
 * Delete the items by using Terraform (Last Step no.1)
+* Fix the CD pipeline on Github Actions
 
 
