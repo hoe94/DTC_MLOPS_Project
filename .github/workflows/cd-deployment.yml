@@ -32,6 +32,7 @@ jobs:
 
       - name: Terraform apply
         id: tf-apply
+        working-directory: 'infrastructure/'
         if: ${{ steps.tf-plan.outcome }} == 'success'
         run: |
           terraform apply -auto-approve
